@@ -31,16 +31,16 @@ enum APIRouter: URLRequestConvertible {
     
     // MARK: - Parameters
     private var parameters: Parameters? {
+        var params: [String: Any] = [:]
         switch self {
         case .getWeather(let data):
-            var params: [String: Any] = [:]
             params[K.APIParameterKey.q] = data.q
             params[K.APIParameterKey.units] = "metric"
-            params[K.APIParameterKey.appid] = "30238c587d3519ffe136dcf0f1a45655"
-            return params
         case .rawURL(_, _, let parameters):
             return parameters
         }
+        params[K.APIParameterKey.appid] = "30238c587d3519ffe136dcf0f1a45655"
+        return params
     }
     
     // MARK: - URLRequestConvertible

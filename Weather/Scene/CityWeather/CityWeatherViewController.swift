@@ -56,12 +56,14 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
     }
     
     private func setupUI() {
+        forecastButton.isHidden = true
         detailView.isHidden = true
         noResultView.isHidden = true
         cityNameTextField.delegate = self
     }
     
     // MARK: IBOutlet
+    @IBOutlet var forecastButton: UIButton!
     @IBOutlet var cityNameTextField: UITextField!
     @IBOutlet var cityNameLabel: UILabel!
     @IBOutlet var tempLabel: UILabel!
@@ -71,7 +73,7 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
     @IBOutlet var noResultView: UIView!
     
     // MARK: IBAction
-    @IBAction func openForecast(_ sender: UIButton) {
+    @IBAction func viewForecast(_ sender: UIButton) {
         router?.navigateToForecast()
     }
     
@@ -91,10 +93,12 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
             descriptionLabel.text = unwrapped(data.weather.first?.description, with: "")
             tempLabel.text = "\(data.main.temp)°C"
             humidityLabel.text = "\(data.main.humidity)%"
+            forecastButton.isHidden = false
             detailView.isHidden = false
             noResultView.isHidden = true
             hideIndicator()
         case .userError:
+            forecastButton.isHidden = true
             detailView.isHidden = true
             noResultView.isHidden = false
             hideIndicator()
