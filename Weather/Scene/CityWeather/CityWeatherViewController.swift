@@ -13,7 +13,7 @@
 import UIKit
 
 protocol CityWeatherDisplayLogic: class {
-    func displaySomething(viewModel: CityWeatherModels.Something.ViewModel)
+    func displayCurrentWeather(viewModel: CityWeatherModels.GetCurrentWeather.ViewModel)
 }
 
 final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLogic {
@@ -42,31 +42,33 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
         viewController.interactor = interactor
         viewController.router = router
         interactor.presenter = presenter
+        interactor.weatherWorker = WeatherWorker(store: WeatherRestStore())
         presenter.viewController = viewController
         router.viewController = viewController
         router.dataStore = interactor
-    }
-    
-    // MARK: Routing
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let scene = segue.identifier {
-            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-            if let router = router, router.responds(to: selector) {
-                router.perform(selector, with: segue)
-            }
-        }
     }
     
     // MARK: View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        doSomething()
+        setupUI()
+    }
+    
+    private func setupUI() {
+        detailView.isHidden = true
+        noResultView.isHidden = true
+        cityNameTextField.delegate = self
     }
     
     // MARK: IBOutlet
-    @IBOutlet var nameTextField: UITextField!
+    @IBOutlet var cityNameTextField: UITextField!
+    @IBOutlet var cityNameLabel: UILabel!
+    @IBOutlet var tempLabel: UILabel!
+    @IBOutlet var humidityLabel: UILabel!
+    @IBOutlet var descriptionLabel: UILabel!
+    @IBOutlet var detailView: UIView!
+    @IBOutlet var noResultView: UIView!
     
     // MARK: IBAction
     @IBAction func openForecast(_ sender: UIButton) {
@@ -75,14 +77,41 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
     
     // MARK: Function
     
-    func doSomething() {
-        let request = CityWeatherModels.Something.Request()
-        interactor?.doSomething(request: request)
+    private func getCurrentWeather(cityName: String) {
+        let request = CityWeatherModels.GetCurrentWeather.Request(cityName: cityName)
+        interactor?.getCurrentWeather(request: request)
     }
     
     // MARK: Display
     
-    func displaySomething(viewModel: CityWeatherModels.Something.ViewModel) {
-        //nameTextField.text = viewModel.name
+    func displayCurrentWeather(viewModel: CityWeatherModels.GetCurrentWeather.ViewModel) {
+        switch viewModel.content {
+        case .success(let data):
+            cityNameLabel.text = data.name
+            descriptionLabel.text = unwrapped(data.weather.first?.description, with: "")
+            tempLabel.text = "\(data.main.temp)°C"
+            humidityLabel.text = "\(data.main.humidity)%"
+            detailView.isHidden = false
+            noResultView.isHidden = true
+            hideIndicator()
+        case .userError:
+            detailView.isHidden = true
+            noResultView.isHidden = false
+            hideIndicator()
+        case .loading:
+            showIndicator()
+        default:
+            break
+        }
+    }
+}
+
+extension CityWeatherViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let text = unwrapped(textField.text, with: "")
+        view.endEditing(true)
+        getCurrentWeather(cityName: text)
+        return true
     }
 }

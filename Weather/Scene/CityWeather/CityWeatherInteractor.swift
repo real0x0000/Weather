@@ -13,7 +13,7 @@
 import UIKit
 
 protocol CityWeatherBusinessLogic {
-    func doSomething(request: CityWeatherModels.Something.Request)
+    func getCurrentWeather(request: CityWeatherModels.GetCurrentWeather.Request)
 }
 
 protocol CityWeatherDataStore {
@@ -22,16 +22,22 @@ protocol CityWeatherDataStore {
 
 final class CityWeatherInteractor: CityWeatherBusinessLogic, CityWeatherDataStore {
     var presenter: CityWeatherPresentationLogic?
-    var worker: CityWeatherWorker?
-    //var name: String = ""
+    var weatherWorker: WeatherWorker?
   
-    // MARK: Do something
-  
-    func doSomething(request: CityWeatherModels.Something.Request) {
-        worker = CityWeatherWorker()
-        worker?.doSomeWork()
-        
-        let response = CityWeatherModels.Something.Response()
-        presenter?.presentSomething(response: response)
+    func getCurrentWeather(request: CityWeatherModels.GetCurrentWeather.Request) {
+        typealias Response = CityWeatherModels.GetCurrentWeather.Response
+        var response: Response
+        response = Response(result: UserResult.loading)
+        presenter?.presentCurrentWeather(response: response)
+        let data = GetWeatherRequestData(q: request.cityName)
+        weatherWorker?.getCurrentWeather(data: data, completion: { [weak self] (result) in
+            switch result {
+            case .success(let data):
+                response = Response(result: UserResult.success(result: data))
+            case .failure(let error):
+                response = Response(result: UserResult.failure(userError: error))
+            }
+            self?.presenter?.presentCurrentWeather(response: response)
+        })
     }
 }

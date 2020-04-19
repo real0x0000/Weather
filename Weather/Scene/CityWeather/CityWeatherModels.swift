@@ -15,17 +15,17 @@ import UIKit
 struct CityWeatherModels {
     // MARK: Use cases
   
-    struct Something {
+    struct GetCurrentWeather {
         struct Request {
-        
+            let cityName: String
         }
     
         struct Response {
-        
+            let result: UserResult<CurrentWeather>
         }
         
         struct ViewModel {
-        
+            let content: Content<CurrentWeather>
         }
     }
 }

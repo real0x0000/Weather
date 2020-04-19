@@ -8,17 +8,17 @@
 import Foundation
 
 protocol WeatherRestStoreProtocol {
-//    func getUserProfile(completion: @escaping (Result<User>) -> Void)
+    func getCurrentWeather(data: GetWeatherRequestData, completion: @escaping (Result<CurrentWeather>) -> Void)
 }
 
 final class WeatherRestStore: WeatherRestStoreProtocol {
 
-//    func getUserProfile(completion: @escaping (Result<User>) -> Void) {
-//        APIClient.share.performRequest(route: .getUserProfile, onCompletion: { (json) in
-//            let user = User(fromJSON: json["data"])
-//            completion(.success(result: user))
-//        }, onError: { (error) in
-//            completion(.failure(error: error))
-//        })
-//    }
+    func getCurrentWeather(data: GetWeatherRequestData, completion: @escaping (Result<CurrentWeather>) -> Void) {
+        APIClient.share.performRequest(route: .getWeather(data: data), onCompletion: { (json) in
+            let weather = CurrentWeather(fromJSON: json)
+            completion(.success(result: weather))
+        }, onError: { (error) in
+            completion(.failure(error: error))
+        })
+    }
 }

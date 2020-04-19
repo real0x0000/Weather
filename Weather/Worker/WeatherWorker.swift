@@ -15,7 +15,7 @@ class WeatherWorker {
         self.store = store
     }
     
-//    func sendOTP(mobile: String, completion: @escaping (Result<String>) -> Void) {
-//        store.sendOTP(mobile: mobile, completion: completion)
-//    }
+    func getCurrentWeather(data: GetWeatherRequestData, completion: @escaping (Result<CurrentWeather>) -> Void) {
+        store.getCurrentWeather(data: data, completion: completion)
+    }
 }

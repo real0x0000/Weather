@@ -13,16 +13,23 @@
 import UIKit
 
 protocol CityWeatherPresentationLogic {
-    func presentSomething(response: CityWeatherModels.Something.Response)
+    func presentCurrentWeather(response: CityWeatherModels.GetCurrentWeather.Response)
 }
 
 final class CityWeatherPresenter: CityWeatherPresentationLogic {
     weak var viewController: CityWeatherDisplayLogic?
     
-    // MARK: Do something
-    
-    func presentSomething(response: CityWeatherModels.Something.Response) {
-        let viewModel = CityWeatherModels.Something.ViewModel()
-        viewController?.displaySomething(viewModel: viewModel)
+    func presentCurrentWeather(response: CityWeatherModels.GetCurrentWeather.Response) {
+        typealias ViewModel = CityWeatherModels.GetCurrentWeather.ViewModel
+        var viewModel: ViewModel
+        switch response.result {
+        case .success(let data):
+            viewModel = ViewModel(content: Content.success(data: data))
+        case .failure(let error):
+            viewModel = ViewModel(content: Content.userError(error))
+        case .loading:
+            viewModel = ViewModel(content: Content.loading)
+        }
+        viewController?.displayCurrentWeather(viewModel: viewModel)
     }
 }
