@@ -1,0 +1,11 @@
+output_dir: Weather/Constants
+
+ib:
+  inputs: Weather
+  outputs:
+    - templatePath: swiftgen/ib/storyboards.stencil
+      output: Storyboards.swift
+      params:
+        ignoreTargetModule: true
+
+
