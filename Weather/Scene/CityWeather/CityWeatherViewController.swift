@@ -56,16 +56,34 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
     }
     
     private func setupUI() {
+        NotificationCenter.default.addObserver(self, selector: #selector(CityWeatherViewController.keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CityWeatherViewController.keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
         forecastButton.isHidden = true
         detailView.isHidden = true
         noResultView.isHidden = true
         cityNameTextField.delegate = self
     }
     
+    @objc private func keyboardWillAppear(notification: NSNotification) {
+        let userInfo = notification.userInfo!
+        var keyboardFrame:CGRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        keyboardFrame = self.view.convert(keyboardFrame, from: nil)
+        var contentInset = scrollView.contentInset
+        contentInset.bottom = keyboardFrame.size.height
+        scrollView.contentInset = contentInset
+    }
+    
+    @objc private func keyboardWillDisappear(notification: NSNotification) {
+        let contentInset: UIEdgeInsets = .zero
+        scrollView.contentInset = contentInset
+    }
+    
     // MARK: IBOutlet
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var forecastButton: UIButton!
     @IBOutlet var cityNameTextField: UITextField!
     @IBOutlet var cityNameLabel: UILabel!
+    @IBOutlet var weatherImageView: UIImageView!
     @IBOutlet var tempLabel: UILabel!
     @IBOutlet var humidityLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
@@ -90,9 +108,10 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
         switch viewModel.content {
         case .success(let data):
             cityNameLabel.text = data.name
-            descriptionLabel.text = unwrapped(data.weather.first?.description, with: "")
-            tempLabel.text = "\(data.main.temp)°C"
-            humidityLabel.text = "\(data.main.humidity)%"
+            descriptionLabel.text = data.description
+            weatherImageView.setImage(with: data.imageUrl)
+            tempLabel.text = data.temp
+            humidityLabel.text = data.humidity
             forecastButton.isHidden = false
             detailView.isHidden = false
             noResultView.isHidden = true

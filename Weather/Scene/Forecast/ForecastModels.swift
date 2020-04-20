@@ -15,17 +15,33 @@ import UIKit
 struct ForecastModels {
     // MARK: Use cases
   
-    struct Something {
+    struct GetForecast {
         struct Request {
         
         }
     
         struct Response {
-        
+            let result: UserResult<[CurrentWeather]>
         }
         
         struct ViewModel {
+            let content: Content<[DisplayForecast]>
+        }
+    }
+    
+    struct DisplayForecast {
+        let date: String
+        let time: String
+        let iconUrl: URL?
+        let highTemp: Double
+        let lowTemp: Double
         
+        init(date: String, time: String, iconUrl: URL?, highTemp: Double, lowTemp: Double) {
+            self.date = date
+            self.time = time
+            self.iconUrl = iconUrl
+            self.highTemp = highTemp
+            self.lowTemp = lowTemp
         }
     }
 }

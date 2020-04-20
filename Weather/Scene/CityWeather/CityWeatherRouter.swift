@@ -20,26 +20,11 @@ final class CityWeatherRouter: NSObject, CityWeatherRoutingLogic {
     weak var viewController: CityWeatherViewController?
     var dataStore: CityWeatherDataStore?
     
-    // MARK: Routing
-    
-    // func routeToSomewhere(segue: UIStoryboardSegue?) { }
-    
     // MARK: Navigation
     
     func navigateToForecast() {
         let destination = StoryboardScene.Forecast.forecastViewController.instantiate()
+        destination.interactor?.keyword = unwrapped(dataStore?.keyword, with: "")
         viewController?.navigationController?.pushViewController(destination, animated: true)
     }
-    
-    //func navigateToSomewhere(source: CityWeatherViewController, destination: SomewhereViewController)
-    //{
-    //  source.show(destination, sender: nil)
-    //}
-    
-    // MARK: Passing data
-    
-    //func passDataToSomewhere(source: CityWeatherDataStore, destination: inout SomewhereDataStore)
-    //{
-    //  destination.name = source.name
-    //}
 }

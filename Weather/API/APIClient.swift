@@ -91,4 +91,8 @@ final class APIClient {
     func HandleException(closure: () -> Void){
         closure()
     }
+    
+    func getImagePath(icon: String) -> String {
+        return String(format: K.ImagePath.baseURL, arguments: [icon])
+    }
 }

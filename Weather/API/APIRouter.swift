@@ -10,6 +10,7 @@ import Alamofire
 enum APIRouter: URLRequestConvertible {
 
     case getWeather(data: GetWeatherRequestData)
+    case getForecast(data: GetForecastRequestData)
     case rawURL(path: String, method: HTTPMethod, parameters: Parameters?)
     
     private var method: HTTPMethod {
@@ -24,6 +25,8 @@ enum APIRouter: URLRequestConvertible {
         switch self {
         case .getWeather:
             return "/weather"
+        case .getForecast:
+            return "/forecast"
         case .rawURL(let path, _, _):
             return path
         }
@@ -34,6 +37,9 @@ enum APIRouter: URLRequestConvertible {
         var params: [String: Any] = [:]
         switch self {
         case .getWeather(let data):
+            params[K.APIParameterKey.q] = data.q
+            params[K.APIParameterKey.units] = "metric"
+        case .getForecast(let data):
             params[K.APIParameterKey.q] = data.q
             params[K.APIParameterKey.units] = "metric"
         case .rawURL(_, _, let parameters):

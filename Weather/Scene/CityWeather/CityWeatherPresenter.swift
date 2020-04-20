@@ -24,7 +24,13 @@ final class CityWeatherPresenter: CityWeatherPresentationLogic {
         var viewModel: ViewModel
         switch response.result {
         case .success(let data):
-            viewModel = ViewModel(content: Content.success(data: data))
+            let name = data.name
+            let description = unwrapped(data.weather.first?.description, with: "")
+            let imageUrl = URL(string: APIClient.share.getImagePath(icon: unwrapped(data.weather.first?.icon, with: "")))
+            let temp = "\(data.main.temp)°"
+            let humidity = "\(data.main.humidity)%"
+            let displayWeather = CityWeatherModels.DisplayWeather(name: name, description: description, imageUrl: imageUrl, temp: temp, humidity: humidity)
+            viewModel = ViewModel(content: Content.success(data: displayWeather))
         case .failure(let error):
             viewModel = ViewModel(content: Content.userError(error))
         case .loading:

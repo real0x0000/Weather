@@ -18,4 +18,8 @@ class WeatherWorker {
     func getCurrentWeather(data: GetWeatherRequestData, completion: @escaping (Result<CurrentWeather>) -> Void) {
         store.getCurrentWeather(data: data, completion: completion)
     }
+    
+    func getForecast(data: GetForecastRequestData, completion: @escaping (Result<[CurrentWeather]>) -> Void) {
+        store.getForecast(data: data, completion: completion)
+    }
 }

@@ -17,14 +17,16 @@ protocol CityWeatherBusinessLogic {
 }
 
 protocol CityWeatherDataStore {
-    //var name: String { get set }
+    var keyword: String { get set }
 }
 
 final class CityWeatherInteractor: CityWeatherBusinessLogic, CityWeatherDataStore {
+    var keyword: String = ""
     var presenter: CityWeatherPresentationLogic?
     var weatherWorker: WeatherWorker?
   
     func getCurrentWeather(request: CityWeatherModels.GetCurrentWeather.Request) {
+        keyword = request.cityName
         typealias Response = CityWeatherModels.GetCurrentWeather.Response
         var response: Response
         response = Response(result: UserResult.loading)

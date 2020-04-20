@@ -7,6 +7,7 @@ inhibit_all_warnings!
 
 def shared_pods
     pod 'Alamofire', '5.0.5', :inhibit_warnings => true
+    pod 'Kingfisher', '5.13.2', :inhibit_warnings => true
     pod 'NVActivityIndicatorView', '4.8.0', :inhibit_warnings => true
     pod 'SwiftGen', '6.1.0', :inhibit_warnings => true
     pod 'SwiftyJSON', '5.0.0', :inhibit_warnings => true

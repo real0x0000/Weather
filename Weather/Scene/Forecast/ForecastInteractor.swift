@@ -13,25 +13,33 @@
 import UIKit
 
 protocol ForecastBusinessLogic {
-    func doSomething(request: ForecastModels.Something.Request)
+    func getForecast(request: ForecastModels.GetForecast.Request)
 }
 
 protocol ForecastDataStore {
-    //var name: String { get set }
+    var keyword: String { get set }
 }
 
 final class ForecastInteractor: ForecastBusinessLogic, ForecastDataStore {
+    var keyword: String = ""
+    
     var presenter: ForecastPresentationLogic?
-    var worker: ForecastWorker?
-    //var name: String = ""
-  
-    // MARK: Do something
-  
-    func doSomething(request: ForecastModels.Something.Request) {
-        worker = ForecastWorker()
-        worker?.doSomeWork()
-        
-        let response = ForecastModels.Something.Response()
-        presenter?.presentSomething(response: response)
+    var weatherWorker: WeatherWorker?
+    
+    func getForecast(request: ForecastModels.GetForecast.Request) {
+        let data = GetForecastRequestData(q: keyword)
+        typealias Response = ForecastModels.GetForecast.Response
+        var response: Response
+        response = Response(result: UserResult.loading)
+        presenter?.presentForecast(response: response)
+        weatherWorker?.getForecast(data: data, completion: { [weak self] (result) in
+            switch result {
+            case .success(let data):
+                response = Response(result: UserResult.success(result: data))
+            case .failure(let error):
+                response = Response(result: UserResult.failure(userError: error))
+            }
+            self?.presenter?.presentForecast(response: response)
+        })
     }
 }

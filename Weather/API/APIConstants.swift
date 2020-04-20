@@ -14,6 +14,10 @@ struct K {
         static let baseURL = "https://api.openweathermap.org/data/2.5"
     }
     
+    struct ImagePath {
+        static let baseURL = "http://openweathermap.org/img/wn/%@@2x.png"
+    }
+    
     struct APIParameterKey {
         static let q = "q"
         static let appid = "appid"

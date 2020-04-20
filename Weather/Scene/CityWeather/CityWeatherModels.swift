@@ -25,7 +25,23 @@ struct CityWeatherModels {
         }
         
         struct ViewModel {
-            let content: Content<CurrentWeather>
+            let content: Content<DisplayWeather>
+        }
+    }
+    
+    struct DisplayWeather {
+        let name: String
+        let description: String
+        let imageUrl: URL?
+        let temp: String
+        let humidity: String
+        
+        init(name: String, description: String, imageUrl: URL?, temp: String, humidity: String) {
+            self.name = name
+            self.description = description
+            self.imageUrl = imageUrl
+            self.temp = temp
+            self.humidity = humidity
         }
     }
 }

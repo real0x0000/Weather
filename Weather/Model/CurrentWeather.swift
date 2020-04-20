@@ -15,6 +15,7 @@ struct CurrentWeather: DataModel {
     let name: String
     let main: WeatherMain
     let cod: Int
+    let dt_txt: String
     
     init(fromJSON json: JSON) {
         self.id = json["id"].intValue
@@ -23,5 +24,6 @@ struct CurrentWeather: DataModel {
         self.name = json["name"].stringValue
         self.main = WeatherMain(fromJSON: json["main"])
         self.cod = json["cod"].intValue
+        self.dt_txt = json["dt_txt"].stringValue
     }
 }

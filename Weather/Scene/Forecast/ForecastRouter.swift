@@ -13,28 +13,16 @@
 import UIKit
 
 @objc protocol ForecastRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func navigateBack()
 }
 
 final class ForecastRouter: NSObject, ForecastRoutingLogic {
     weak var viewController: ForecastViewController?
     var dataStore: ForecastDataStore?
     
-    // MARK: Routing
-    
-    // func routeToSomewhere(segue: UIStoryboardSegue?) { }
-    
     // MARK: Navigation
     
-    //func navigateToSomewhere(source: ForecastViewController, destination: SomewhereViewController)
-    //{
-    //  source.show(destination, sender: nil)
-    //}
-    
-    // MARK: Passing data
-    
-    //func passDataToSomewhere(source: ForecastDataStore, destination: inout SomewhereDataStore)
-    //{
-    //  destination.name = source.name
-    //}
+    func navigateBack() {
+        viewController?.navigationController?.popViewController(animated: true)
+    }
 }

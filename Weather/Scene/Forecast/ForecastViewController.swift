@@ -13,12 +13,13 @@
 import UIKit
 
 protocol ForecastDisplayLogic: class {
-    func displaySomething(viewModel: ForecastModels.Something.ViewModel)
+    func displayForecast(viewModel: ForecastModels.GetForecast.ViewModel)
 }
 
 final class ForecastViewController: BaseViewController, ForecastDisplayLogic {
     var interactor: (ForecastBusinessLogic & ForecastDataStore)?
     var router: (NSObjectProtocol & ForecastRoutingLogic)?
+    var forecastList: [ForecastModels.DisplayForecast] = []
     
     // MARK: Object lifecycle
     
@@ -42,44 +43,82 @@ final class ForecastViewController: BaseViewController, ForecastDisplayLogic {
         viewController.interactor = interactor
         viewController.router = router
         interactor.presenter = presenter
+        interactor.weatherWorker = WeatherWorker(store: WeatherRestStore())
         presenter.viewController = viewController
         router.viewController = viewController
         router.dataStore = interactor
-    }
-    
-    // MARK: Routing
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let scene = segue.identifier {
-            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-            if let router = router, router.responds(to: selector) {
-                router.perform(selector, with: segue)
-            }
-        }
     }
     
     // MARK: View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        doSomething()
+        setupView()
+        getForecast()
+    }
+    
+    private func setupView() {
+        setupTableView()
+        title = "Bangkok"
     }
     
     // MARK: IBOutlet
-    //@IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet var tableView: UITableView!
     
     // MARK: IBAction
+    @IBAction func back(_ sender: UIButton) {
+        router?.navigateBack()
+    }
     
     // MARK: Function
     
-    func doSomething() {
-        let request = ForecastModels.Something.Request()
-        interactor?.doSomething(request: request)
+    func getForecast() {
+        let request = ForecastModels.GetForecast.Request()
+        interactor?.getForecast(request: request)
     }
     
     // MARK: Display
     
-    func displaySomething(viewModel: ForecastModels.Something.ViewModel) {
-        //nameTextField.text = viewModel.name
+    func displayForecast(viewModel: ForecastModels.GetForecast.ViewModel) {
+        switch viewModel.content {
+        case .success(let data):
+            forecastList = data
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            hideIndicator()
+        case .userError:
+            hideIndicator()
+        case .loading:
+            showIndicator()
+        default:
+            break
+        }
+    }
+}
+
+extension ForecastViewController: UITableViewDataSource, UITableViewDelegate {
+
+    private func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UINib(nibName: "ForecastTableCell", bundle: nil), forCellReuseIdentifier: "ForecastTableCell")
+        tableView.separatorStyle = .none
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return forecastList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard  let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastTableCell", for: indexPath) as? ForecastTableCell else { return UITableViewCell() }
+        let forecast = forecastList[indexPath.row]
+        let date = forecast.date
+        let time = forecast.time
+        let iconUrl = forecast.iconUrl
+        let high = forecast.highTemp
+        let low = forecast.lowTemp
+        cell.updateUI(date: date, time: time, iconUrl: iconUrl, high: high, low: low)
+        return cell
     }
 }
