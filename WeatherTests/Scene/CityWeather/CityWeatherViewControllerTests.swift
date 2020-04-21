@@ -35,9 +35,7 @@ class CityWeatherViewControllerTests: XCTestCase {
     // MARK: Test setup
     
     func setupCityWeatherViewController() {
-        let bundle = Bundle.main
-        let storyboard = UIStoryboard(name: "Main", bundle: bundle)
-        sut = storyboard.instantiateViewController(withIdentifier: "CityWeatherViewController") as! CityWeatherViewController
+        sut = StoryboardScene.CityWeather.cityWeatherViewController.instantiate()
     }
     
     func loadView() {
@@ -47,37 +45,48 @@ class CityWeatherViewControllerTests: XCTestCase {
     
     // MARK: Test doubles
     
-//    class CityWeatherBusinessLogicSpy: CityWeatherBusinessLogic {
-//        var doSomethingCalled = false
-//
-//        func doSomething(request: CityWeather.Something.Request) {
-//            doSomethingCalled = true
-//        }
-//    }
+    class CityWeatherBusinessLogicSpy: CityWeatherBusinessLogic, CityWeatherDataStore {
+        var keyword: String = ""
+        var degree: Degree = .celsius
+        var selectDegreeCalled = false
+        var getCurrentWeatherCalled = false
+        
+        func selectDegree(request: CityWeatherModels.SelectDegree.Request) {
+            selectDegreeCalled = true
+        }
+        
+        func getCurrentWeather(request: CityWeatherModels.GetCurrentWeather.Request) {
+            getCurrentWeatherCalled = true
+        }
+    }
     
     // MARK: Tests
     
-//    func testShouldDoSomethingWhenViewIsLoaded() {
-//        // Given
-//        let spy = CityWeatherBusinessLogicSpy()
-//        sut.interactor = spy
-//        
-//        // When
-//        loadView()
-//        
-//        // Then
-//        XCTAssertTrue(spy.doSomethingCalled, "viewDidLoad() should ask the interactor to do something")
-//    }
-//    
-//    func testDisplaySomething() {
-//        // Given
-//        let viewModel = CityWeather.Something.ViewModel()
-//        
-//        // When
-//        loadView()
-//        sut.displaySomething(viewModel: viewModel)
-//        
-//        // Then
-//        //XCTAssertEqual(sut.nameTextField.text, "", "displaySomething(viewModel:) should update the name text field")
-//    }
+    func testChangeDegreeShouldAskInteractorToSetSelectDegree() {
+        // Given
+        let interactorSpy = CityWeatherBusinessLogicSpy()
+        sut.interactor = interactorSpy
+        
+        // When
+        sut.loadView()
+        sut.degreeSegmentedControl.selectedSegmentIndex = 1
+        sut.segmentedControlValueChanged(sut.degreeSegmentedControl)
+        
+        // Then
+        XCTAssert(interactorSpy.selectDegreeCalled, "change degree should ask interactor to SetSelectDegree()")
+    }
+    
+    func testSearchCityNameShouldAskInteractorToGetCurrentWeather() {
+        // Given
+        let interactorSpy = CityWeatherBusinessLogicSpy()
+        sut.interactor = interactorSpy
+        
+        // When
+        sut.loadView()
+        sut.cityNameTextField.text = "test"
+        _ = sut.textFieldShouldReturn(sut.cityNameTextField)
+        
+        // Then
+        XCTAssert(interactorSpy.getCurrentWeatherCalled, "search city name should ask interactor to getCurrentWeather()")
+    }
 }

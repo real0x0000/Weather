@@ -49,6 +49,9 @@
 		BAB4DBC1244EBE4E00AC6120 /* CityWeatherViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB4DBBD244EBE4E00AC6120 /* CityWeatherViewControllerTests.swift */; };
 		BAB4DBC2244EBE4E00AC6120 /* CityWeatherInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB4DBBE244EBE4E00AC6120 /* CityWeatherInteractorTests.swift */; };
 		BAB4DBC4244EBE4E00AC6120 /* CityWeatherPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB4DBC0244EBE4E00AC6120 /* CityWeatherPresenterTests.swift */; };
+		BAB4DBCA244EC5A400AC6120 /* ForecastViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB4DBC6244EC5A400AC6120 /* ForecastViewControllerTests.swift */; };
+		BAB4DBCB244EC5A400AC6120 /* ForecastInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB4DBC7244EC5A400AC6120 /* ForecastInteractorTests.swift */; };
+		BAB4DBCD244EC5A400AC6120 /* ForecastPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB4DBC9244EC5A400AC6120 /* ForecastPresenterTests.swift */; };
 		BAE03D54244AFC9100C31E57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE03D53244AFC9100C31E57 /* AppDelegate.swift */; };
 		BAE03D56244AFC9100C31E57 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE03D55244AFC9100C31E57 /* SceneDelegate.swift */; };
 		BAE03D58244AFC9100C31E57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE03D57244AFC9100C31E57 /* ViewController.swift */; };
@@ -118,6 +121,9 @@
 		BAB4DBBD244EBE4E00AC6120 /* CityWeatherViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityWeatherViewControllerTests.swift; sourceTree = "<group>"; };
 		BAB4DBBE244EBE4E00AC6120 /* CityWeatherInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityWeatherInteractorTests.swift; sourceTree = "<group>"; };
 		BAB4DBC0244EBE4E00AC6120 /* CityWeatherPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityWeatherPresenterTests.swift; sourceTree = "<group>"; };
+		BAB4DBC6244EC5A400AC6120 /* ForecastViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewControllerTests.swift; sourceTree = "<group>"; };
+		BAB4DBC7244EC5A400AC6120 /* ForecastInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastInteractorTests.swift; sourceTree = "<group>"; };
+		BAB4DBC9244EC5A400AC6120 /* ForecastPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastPresenterTests.swift; sourceTree = "<group>"; };
 		BAE03D50244AFC9100C31E57 /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE03D53244AFC9100C31E57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAE03D55244AFC9100C31E57 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -316,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				BAB4DBBC244EBE3500AC6120 /* CityWeather */,
+				BAB4DBC5244EC58A00AC6120 /* Forecast */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -328,6 +335,16 @@
 				BAB4DBC0244EBE4E00AC6120 /* CityWeatherPresenterTests.swift */,
 			);
 			path = CityWeather;
+			sourceTree = "<group>";
+		};
+		BAB4DBC5244EC58A00AC6120 /* Forecast */ = {
+			isa = PBXGroup;
+			children = (
+				BAB4DBC6244EC5A400AC6120 /* ForecastViewControllerTests.swift */,
+				BAB4DBC7244EC5A400AC6120 /* ForecastInteractorTests.swift */,
+				BAB4DBC9244EC5A400AC6120 /* ForecastPresenterTests.swift */,
+			);
+			path = Forecast;
 			sourceTree = "<group>";
 		};
 		BAE03D47244AFC9100C31E57 = {
@@ -633,9 +650,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAB4DBCD244EC5A400AC6120 /* ForecastPresenterTests.swift in Sources */,
 				BAB4DBC2244EBE4E00AC6120 /* CityWeatherInteractorTests.swift in Sources */,
+				BAB4DBCB244EC5A400AC6120 /* ForecastInteractorTests.swift in Sources */,
 				BAB4DBC4244EBE4E00AC6120 /* CityWeatherPresenterTests.swift in Sources */,
 				BAB4DBC1244EBE4E00AC6120 /* CityWeatherViewControllerTests.swift in Sources */,
+				BAB4DBCA244EC5A400AC6120 /* ForecastViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
