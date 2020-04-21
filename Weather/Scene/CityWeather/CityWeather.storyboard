@@ -19,33 +19,48 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BF6-Hz-071" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="583"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="653"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5ae-Nf-BlX">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="583"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="653"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eJI-93-1l3" userLabel="Search View">
-                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
                                                         <subviews>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter city name, state, or country code" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KcQ-iv-RXB">
-                                                                <rect key="frame" x="30" y="10" width="354" height="30"/>
+                                                                <rect key="frame" x="30" y="70" width="354" height="40"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="30" id="fsz-Oj-Qrb"/>
+                                                                    <constraint firstAttribute="height" constant="40" id="fsz-Oj-Qrb"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" returnKeyType="search"/>
                                                             </textField>
+                                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8fu-y0-Me9">
+                                                                <rect key="frame" x="30" y="20" width="354" height="31"/>
+                                                                <color key="backgroundColor" red="0.93337172270000002" green="0.93324393029999997" blue="0.93725663420000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="30" id="OEc-Kc-9Ye"/>
+                                                                </constraints>
+                                                                <segments>
+                                                                    <segment title="Celsius °C"/>
+                                                                    <segment title="Fahrenheit °F"/>
+                                                                </segments>
+                                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </segmentedControl>
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                         <constraints>
+                                                            <constraint firstItem="8fu-y0-Me9" firstAttribute="top" secondItem="eJI-93-1l3" secondAttribute="top" constant="20" id="2E6-Mt-KL0"/>
                                                             <constraint firstAttribute="bottom" secondItem="KcQ-iv-RXB" secondAttribute="bottom" constant="10" id="9tq-80-Z0P"/>
-                                                            <constraint firstItem="KcQ-iv-RXB" firstAttribute="top" secondItem="eJI-93-1l3" secondAttribute="top" constant="10" id="FW1-Zu-ltR"/>
+                                                            <constraint firstAttribute="trailing" secondItem="8fu-y0-Me9" secondAttribute="trailing" constant="30" id="TN4-qt-Dte"/>
                                                             <constraint firstAttribute="trailing" secondItem="KcQ-iv-RXB" secondAttribute="trailing" constant="30" id="cvL-f6-xFK"/>
+                                                            <constraint firstItem="KcQ-iv-RXB" firstAttribute="top" secondItem="8fu-y0-Me9" secondAttribute="bottom" constant="20" id="iWB-3X-3ot"/>
                                                             <constraint firstItem="KcQ-iv-RXB" firstAttribute="leading" secondItem="eJI-93-1l3" secondAttribute="leading" constant="30" id="xeR-wG-dJx"/>
+                                                            <constraint firstItem="8fu-y0-Me9" firstAttribute="leading" secondItem="eJI-93-1l3" secondAttribute="leading" constant="30" id="y4U-Cx-v2x"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gTN-rr-rva" userLabel="Detail View">
-                                                        <rect key="frame" x="0.0" y="50" width="414" height="417"/>
+                                                        <rect key="frame" x="0.0" y="120" width="414" height="417"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Bangkok" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FZC-QN-wQc">
                                                                 <rect key="frame" x="30" y="10" width="354" height="20.5"/>
@@ -108,7 +123,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Td0-t0-0b8" userLabel="No Result View">
-                                                        <rect key="frame" x="0.0" y="467" width="414" height="116"/>
+                                                        <rect key="frame" x="0.0" y="537" width="414" height="116"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Result not found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UIO-Oi-Iv9">
                                                                 <rect key="frame" x="30" y="40" width="354" height="36"/>
@@ -174,6 +189,7 @@
                     <connections>
                         <outlet property="cityNameLabel" destination="FZC-QN-wQc" id="T6l-S1-WB1"/>
                         <outlet property="cityNameTextField" destination="KcQ-iv-RXB" id="ddG-nt-tdp"/>
+                        <outlet property="degreeSegmentedControl" destination="8fu-y0-Me9" id="602-Ou-3Le"/>
                         <outlet property="descriptionLabel" destination="Vr7-u1-wXZ" id="kMg-d8-CcA"/>
                         <outlet property="detailView" destination="gTN-rr-rva" id="Kc0-LI-dKC"/>
                         <outlet property="forecastButton" destination="V8B-HX-YQY" id="lSl-z9-QYZ"/>

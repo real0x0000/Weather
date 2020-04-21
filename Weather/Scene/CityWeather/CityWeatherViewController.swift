@@ -13,6 +13,7 @@
 import UIKit
 
 protocol CityWeatherDisplayLogic: class {
+    func displaySelectDegree(viewModel: CityWeatherModels.SelectDegree.ViewModel)
     func displayCurrentWeather(viewModel: CityWeatherModels.GetCurrentWeather.ViewModel)
 }
 
@@ -58,10 +59,19 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
     private func setupUI() {
         NotificationCenter.default.addObserver(self, selector: #selector(CityWeatherViewController.keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(CityWeatherViewController.keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
+        degreeSegmentedControl.addTarget(self, action: #selector(CityWeatherViewController.segmentedControlValueChanged(_:)), for: .valueChanged)
         forecastButton.isHidden = true
         detailView.isHidden = true
         noResultView.isHidden = true
         cityNameTextField.delegate = self
+        if #available(iOS 13.0, *) {
+            
+        } else {
+            degreeSegmentedControl.roundCornerView(rad: 5)
+            degreeSegmentedControl.addBorder(color: #colorLiteral(red: 0.9333333333, green: 0.9333333333, blue: 0.937254902, alpha: 1), width: 1)
+        }
+        degreeSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
+        degreeSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
     }
     
     @objc private func keyboardWillAppear(notification: NSNotification) {
@@ -81,6 +91,7 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
     // MARK: IBOutlet
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var forecastButton: UIButton!
+    @IBOutlet var degreeSegmentedControl: UISegmentedControl!
     @IBOutlet var cityNameTextField: UITextField!
     @IBOutlet var cityNameLabel: UILabel!
     @IBOutlet var weatherImageView: UIImageView!
@@ -97,12 +108,33 @@ final class CityWeatherViewController: BaseViewController, CityWeatherDisplayLog
     
     // MARK: Function
     
+    @objc func segmentedControlValueChanged(_ segment: UISegmentedControl) {
+        var degree: Degree = .celsius
+        switch segment.selectedSegmentIndex {
+        case 0:
+            degree = .celsius
+        case 1:
+            degree = .fahrenheit
+        default:
+            break
+        }
+        let request = CityWeatherModels.SelectDegree.Request(degree: degree)
+        interactor?.selectDegree(request: request)
+    }
+    
     private func getCurrentWeather(cityName: String) {
         let request = CityWeatherModels.GetCurrentWeather.Request(cityName: cityName)
         interactor?.getCurrentWeather(request: request)
     }
     
     // MARK: Display
+    
+    func displaySelectDegree(viewModel: CityWeatherModels.SelectDegree.ViewModel) {
+        let cityName = unwrapped(cityNameTextField.text, with: "")
+        if !cityName.isEmpty {
+            getCurrentWeather(cityName: cityName)
+        }
+    }
     
     func displayCurrentWeather(viewModel: CityWeatherModels.GetCurrentWeather.ViewModel) {
         switch viewModel.content {

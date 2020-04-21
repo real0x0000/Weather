@@ -38,10 +38,10 @@ enum APIRouter: URLRequestConvertible {
         switch self {
         case .getWeather(let data):
             params[K.APIParameterKey.q] = data.q
-            params[K.APIParameterKey.units] = "metric"
+            params[K.APIParameterKey.units] = data.degree.toParameters()
         case .getForecast(let data):
             params[K.APIParameterKey.q] = data.q
-            params[K.APIParameterKey.units] = "metric"
+            params[K.APIParameterKey.units] = data.degree.toParameters()
         case .rawURL(_, _, let parameters):
             return parameters
         }

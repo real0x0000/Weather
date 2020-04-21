@@ -25,6 +25,7 @@ final class CityWeatherRouter: NSObject, CityWeatherRoutingLogic {
     func navigateToForecast() {
         let destination = StoryboardScene.Forecast.forecastViewController.instantiate()
         destination.interactor?.keyword = unwrapped(dataStore?.keyword, with: "")
+        destination.interactor?.degree = unwrapped(dataStore?.degree, with: .celsius)
         viewController?.navigationController?.pushViewController(destination, animated: true)
     }
 }

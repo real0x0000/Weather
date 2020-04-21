@@ -17,15 +17,15 @@ struct ForecastModels {
   
     struct GetForecast {
         struct Request {
-        
+            
         }
     
         struct Response {
-            let result: UserResult<[CurrentWeather]>
+            let result: UserResult<(String, [CurrentWeather])>
         }
         
         struct ViewModel {
-            let content: Content<[DisplayForecast]>
+            let content: Content<(String, [DisplayForecast])>
         }
     }
     

@@ -13,17 +13,26 @@
 import UIKit
 
 protocol CityWeatherBusinessLogic {
+    func selectDegree(request: CityWeatherModels.SelectDegree.Request)
     func getCurrentWeather(request: CityWeatherModels.GetCurrentWeather.Request)
 }
 
 protocol CityWeatherDataStore {
     var keyword: String { get set }
+    var degree: Degree { get set }
 }
 
 final class CityWeatherInteractor: CityWeatherBusinessLogic, CityWeatherDataStore {
     var keyword: String = ""
+    var degree: Degree = .celsius
     var presenter: CityWeatherPresentationLogic?
     var weatherWorker: WeatherWorker?
+    
+    func selectDegree(request: CityWeatherModels.SelectDegree.Request) {
+        degree = request.degree
+        let response = CityWeatherModels.SelectDegree.Response()
+        presenter?.presentSelectDegree(response: response)
+    }
   
     func getCurrentWeather(request: CityWeatherModels.GetCurrentWeather.Request) {
         keyword = request.cityName
@@ -31,7 +40,7 @@ final class CityWeatherInteractor: CityWeatherBusinessLogic, CityWeatherDataStor
         var response: Response
         response = Response(result: UserResult.loading)
         presenter?.presentCurrentWeather(response: response)
-        let data = GetWeatherRequestData(q: request.cityName)
+        let data = GetWeatherRequestData(q: request.cityName, degree: degree)
         weatherWorker?.getCurrentWeather(data: data, completion: { [weak self] (result) in
             switch result {
             case .success(let data):

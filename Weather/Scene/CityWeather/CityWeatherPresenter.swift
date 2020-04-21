@@ -13,11 +13,17 @@
 import UIKit
 
 protocol CityWeatherPresentationLogic {
+    func presentSelectDegree(response: CityWeatherModels.SelectDegree.Response)
     func presentCurrentWeather(response: CityWeatherModels.GetCurrentWeather.Response)
 }
 
 final class CityWeatherPresenter: CityWeatherPresentationLogic {
     weak var viewController: CityWeatherDisplayLogic?
+    
+    func presentSelectDegree(response: CityWeatherModels.SelectDegree.Response) {
+        let viewModel = CityWeatherModels.SelectDegree.ViewModel()
+        viewController?.displaySelectDegree(viewModel: viewModel)
+    }
     
     func presentCurrentWeather(response: CityWeatherModels.GetCurrentWeather.Response) {
         typealias ViewModel = CityWeatherModels.GetCurrentWeather.ViewModel

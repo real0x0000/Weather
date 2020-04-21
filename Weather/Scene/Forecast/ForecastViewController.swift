@@ -59,7 +59,6 @@ final class ForecastViewController: BaseViewController, ForecastDisplayLogic {
     
     private func setupView() {
         setupTableView()
-        title = "Bangkok"
     }
     
     // MARK: IBOutlet
@@ -72,9 +71,18 @@ final class ForecastViewController: BaseViewController, ForecastDisplayLogic {
     
     // MARK: Function
     
-    func getForecast() {
+    private func getForecast() {
         let request = ForecastModels.GetForecast.Request()
         interactor?.getForecast(request: request)
+    }
+    
+    private func displayErrorAlert(title: String) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: { [weak self] _ in
+            self?.router?.navigateBack()
+        })
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
     
     // MARK: Display
@@ -82,13 +90,16 @@ final class ForecastViewController: BaseViewController, ForecastDisplayLogic {
     func displayForecast(viewModel: ForecastModels.GetForecast.ViewModel) {
         switch viewModel.content {
         case .success(let data):
-            forecastList = data
+            let (name, list) = data
+            title = name
+            forecastList = list
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
             hideIndicator()
-        case .userError:
+        case .userError(let error):
             hideIndicator()
+            displayErrorAlert(title: error.message)
         case .loading:
             showIndicator()
         default:

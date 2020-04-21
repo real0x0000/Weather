@@ -10,8 +10,10 @@ import Foundation
 struct GetForecastRequestData {
     
     let q: String
+    let degree: Degree
 
-    init(q: String) {
+    init(q: String, degree: Degree) {
         self.q = q
+        self.degree = degree
     }
 }

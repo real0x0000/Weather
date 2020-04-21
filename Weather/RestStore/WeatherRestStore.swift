@@ -9,7 +9,7 @@ import Foundation
 
 protocol WeatherRestStoreProtocol {
     func getCurrentWeather(data: GetWeatherRequestData, completion: @escaping (Result<CurrentWeather>) -> Void)
-    func getForecast(data: GetForecastRequestData, completion: @escaping (Result<[CurrentWeather]>) -> Void)
+    func getForecast(data: GetForecastRequestData, completion: @escaping (Result<(String, [CurrentWeather])>) -> Void)
 }
 
 final class WeatherRestStore: WeatherRestStoreProtocol {
@@ -23,10 +23,11 @@ final class WeatherRestStore: WeatherRestStoreProtocol {
         })
     }
     
-    func getForecast(data: GetForecastRequestData, completion: @escaping (Result<[CurrentWeather]>) -> Void) {
+    func getForecast(data: GetForecastRequestData, completion: @escaping (Result<(String, [CurrentWeather])>) -> Void) {
         APIClient.share.performRequest(route: .getForecast(data: data), onCompletion: { (json) in
+            let name = json["city"]["name"].stringValue
             let weatherList = [CurrentWeather].from(jsonArray: json["list"].arrayValue)
-            completion(.success(result: weatherList))
+            completion(.success(result: (name, weatherList)))
         }, onError: { (error) in
             completion(.failure(error: error))
         })

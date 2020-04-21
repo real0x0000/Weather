@@ -18,16 +18,17 @@ protocol ForecastBusinessLogic {
 
 protocol ForecastDataStore {
     var keyword: String { get set }
+    var degree: Degree { get set }
 }
 
 final class ForecastInteractor: ForecastBusinessLogic, ForecastDataStore {
     var keyword: String = ""
-    
+    var degree: Degree = .celsius
     var presenter: ForecastPresentationLogic?
     var weatherWorker: WeatherWorker?
     
     func getForecast(request: ForecastModels.GetForecast.Request) {
-        let data = GetForecastRequestData(q: keyword)
+        let data = GetForecastRequestData(q: keyword, degree: degree)
         typealias Response = ForecastModels.GetForecast.Response
         var response: Response
         response = Response(result: UserResult.loading)

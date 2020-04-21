@@ -15,6 +15,20 @@ import UIKit
 struct CityWeatherModels {
     // MARK: Use cases
   
+    struct SelectDegree {
+        struct Request {
+            let degree: Degree
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
+        }
+    }
+    
     struct GetCurrentWeather {
         struct Request {
             let cityName: String

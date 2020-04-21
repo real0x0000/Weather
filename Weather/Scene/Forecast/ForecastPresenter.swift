@@ -24,7 +24,8 @@ final class ForecastPresenter: ForecastPresentationLogic {
         var viewModel: ViewModel
         switch response.result {
         case .success(let data):
-            let forecastList: [ForecastModels.DisplayForecast] = data.map {
+            let (name, list) = data
+            let forecastList: [ForecastModels.DisplayForecast] = list.map {
                 let datetime = unwrapped(DateFormatter.dateFrom(string: $0.dt_txt, format: "yyyy-MM-dd HH:mm:ss"), with: Date())
                 let dateStr = DateFormatter.stringFrom(date: datetime, format: "E")
                 let timeStr = DateFormatter.stringFrom(date: datetime, format: "HH:mm")
@@ -33,7 +34,7 @@ final class ForecastPresenter: ForecastPresentationLogic {
                 let lowTemp = $0.main.temp_min
                 return ForecastModels.DisplayForecast(date: dateStr, time: timeStr, iconUrl: iconUrl, highTemp: highTemp, lowTemp: lowTemp)
             }
-            viewModel = ViewModel(content: Content.success(data: forecastList))
+            viewModel = ViewModel(content: Content.success(data: (name, forecastList)))
         case .failure(let error):
             viewModel = ViewModel(content: Content.userError(error))
         case .loading:
