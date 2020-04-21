@@ -83,7 +83,6 @@ enum APIRouter: URLRequestConvertible {
                 throw AFError.parameterEncodingFailed(reason: .jsonEncodingFailed(error: error))
             }
         }
-        
         return urlRequest
     }
 }
